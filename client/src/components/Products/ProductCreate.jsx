@@ -1,61 +1,103 @@
-import React, {useState} from 'react';
-import{Form, FormGroup, Label, Input, Button} from 'reactstrap'
+import React, { useState, useEffect } from "react";
+import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import axios from "axios";
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const NewProduct = () => {
-    const [product, setProduct] = useState({
-        name:"",
-        description:"",
-        image:"",
-        price:"",
-        categoryId:"",
-        size:"",
-        color:"",
-        stock:""
-    })
+  const [product, setProduct] = useState({
+    name: "",
+    description: "",
+    image: "",
+    price: "",
+    categoryId: "",
+    size: "",
+    color: "",
+    stock: "",
+  });
 
+  const [categorias, setCategorias] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const token = localStorage.getItem("token")
 
   const [successM, setSuccessM] = useState(null);
   const [errorM, setErrorM] = useState(null);
 
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          "http://localhost:5001/api/categorias",
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        console.log(response);
+        setCategorias(response.data.categorias);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCategorias();
+  }, []);
 
+  const toggleDropdown = () => setDropdownOpen((prevState) => !prevState);
 
   const onChangeInput = (e) => {
-    const { name, value } = e.target; 
-    setProduct({ ...product, [name]: value }); 
+    const { name, value } = e.target;
+    setProduct({ ...product, [name]: value });
     console.log(product);
   };
 
-const productSubmit = async (event) =>{
+  const onCategorySelect = (categoryId) => {
+    setProduct({ ...product, categoryId });
+  };
+
+  const productSubmit = async (event) => {
     event.preventDefault();
     try {
-        const response = await axios.post("http://localhost:5001/api/new-product", {...product})
-    console.log(response);
-    setSuccessM(response.data.message);
+      const response = await axios.post(
+        "http://localhost:5001/api/new-product",
+        { ...product }, {
+          headers: {
+            Authorization: token
+          }
+        }
+      );
+      console.log(response);
+      setSuccessM(response.data.message);
+      setProduct({
+        name: "",
+        description: "",
+        image: "",
+        price: "",
+        categoryId: "",
+        size: "",
+        color: "",
+        stock: "",
+      });
 
+      
 
-    localStorage.setItem("token", response.data.accessToken)
-      localStorage.setItem("role", response.data.userFind.role) 
-
-      setTimeout(()=>{
-        window.location.href ="/producto"
-      },3000)
-    } catch (error) { 
-      setErrorM(error.message)
-      setTimeout(()=>{
-        window.location.href ="/"
-      }, 3000)
+      // setTimeout(()=>{
+      //   window.location.href ="/producto"
+      // },3000)
+    } catch (error) {
+      console.log(error.response);
+      setErrorM(error.message);
+      // setTimeout(()=>{
+      //   window.location.href ="/"
+      // }, 3000)
     }
-        
-    } 
-    
+  };
 
-return (
+  return (
     <div>
-    <Form onSubmit={productSubmit}>
-    <FormGroup floating>
+      <Form onSubmit={productSubmit}>
+        <FormGroup floating>
           <Input
             id="exampleName"
             name="name"
@@ -83,7 +125,7 @@ return (
             name="image"
             value={product.image}
             placeholder="Imagen"
-            type="text"
+            type="file"
             onChange={onChangeInput}
           />
           <Label for="exampleEmail">Imagen</Label>
@@ -91,13 +133,20 @@ return (
         <FormGroup floating>
           <Input
             id="exampleCategory"
-            name="category"
+            name="categoryId"
             value={product.categoryId}
             placeholder="Category"
-            type="Text"
-            onChange={onChangeInput}
-          />
-          <Label for="examplePassword">Category</Label>
+            type="select"
+            onChange={(e) => onCategorySelect(e.target.value)}
+          >
+            {categorias.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
+          </Input>
+
+          <Label for="exampleCategory">Category</Label>
         </FormGroup>{" "}
         <FormGroup floating>
           <Input
@@ -132,17 +181,35 @@ return (
           />
           <Label for="exampleAddress">Unidades</Label>
         </FormGroup>{" "}
+        <FormGroup floating>
+          <Input
+            id="examplePrice"
+            name="price"
+            value={product.price}
+            placeholder="Precio"
+            type="number"
+            onChange={onChangeInput}
+          />
+          <Label for="examplePrice">Precio</Label>
+        </FormGroup>{" "}
         <Button>Submit</Button>
       </Form>
-      <div className="alert alert-primary" role="alert" style= {{display: successM ? "block" : "none"}}>
+      <div
+        className="alert alert-primary"
+        role="alert"
+        style={{ display: successM ? "block" : "none" }}
+      >
         {successM}
       </div>
-      <div className="alert alert-danger" role="alert" style= {{display: errorM ? "block" : "none"}}>
+      <div
+        className="alert alert-danger"
+        role="alert"
+        style={{ display: errorM ? "block" : "none" }}
+      >
         {errorM}
       </div>
     </div>
-)
-
-}
+  );
+};
 
 export default NewProduct;

@@ -37,10 +37,137 @@
   }
 }
 
+/* Imágen de home. Logo de la empresa */
+
 img{
   display: flex;
   padding-top: 20px;
   height: 200px;
   width: 150px;
   justify-content: space-between;
+}
+
+
+/* Formularios: registro y login */
+
+.formulario{
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  width: 300px;
+  padding-top: 30px;
+  
+}
+
+.boton{
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+
+}
+
+/* footer inicio */
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.footer{
+  background-color: #242424;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  
+}
+
+.divfooter{
+  display: flex;
+  justify-content: center;
+}
+.logo-footer{
+  margin-bottom: 1rem;
+  width: 65px;
+  height: 80px;
+ 
+}
+.container-footer{
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+}
+.text-white{
+  background-color: #779559;
+}
+
+.text-footer{
+  list-style-type: none;
+}
+
+/* Navbar */
+
+.logo{
+  width: 45px;
+  height: 55px;
+}
+
+.navbar-nav .nav-link {
+  color: white;
+}
+
+.bienvenido{
+  color:white
+}
+
+/* Home cards */
+
+.card {
+  width: 18rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+.no-underline {
+  text-decoration: none;
+}
+
+.imagen {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.card-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 30px;
+}
+
+.boton{
+  justify-content: center;
+  padding-bottom: 30px;
+}
+
+.white{
+  color: black;
+  font-weight: 500;
+  border: solid black 0.1rem;
+  margin-top: 1rem;
+  text-decoration: none;
+  
+}
+
+.link{
+  text-decoration: none;
+  color: black;
+  margin-bottom: 2rem;
+}
+
+.new-category{
+  margin: 200px 50px 300px 50px;
+
 }

@@ -11,6 +11,9 @@ import ProfileModify from "../Profile/ProfileModify";
 import ProductCreate from "../Products/ProductCreate";
 import Category from "../Category/Category";
 import Logout from "../Logout/Logout"
+import Cart from "../Cart/Cart";
+import CategoryCreate from "../Category/CategoryCreate";
+
 
 
 const Pages = () => {
@@ -26,7 +29,11 @@ const Pages = () => {
       <Route path='/modifyU' element={<ProfileModify/>}/>
       <Route path='/new-product' element={<ProductCreate/>}/>
       <Route path='/categorias' element={<Category/>}/>
+      <Route path='/new-category' element={<CategoryCreate/>}/>
       <Route path='/logout' element={<Logout/>}/>
+      <Route path='/cart' element={<Cart/>}/>
+      
+
     </Routes>
   );
 };

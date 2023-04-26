@@ -12,14 +12,14 @@ const Product = require("../models/Product")
 //darle permiso de vendedor también
 CategoriasRouter.post("/categorias", auth, authAdmin, async (req, res) => {
     const {
-        nameC,
+        name,
         description
     } = req.body
     try {
 
         // Compruebo si hay alguna categoría con el mismo nombre
         let categoriaFind = await Categorias.findOne({
-            nameC
+            name
         })
         if (categoriaFind) {
             return res.status(400).send({
@@ -28,7 +28,7 @@ CategoriasRouter.post("/categorias", auth, authAdmin, async (req, res) => {
             })
         }
 
-        if (!nameC || !description) {
+        if (!name || !description) {
             return res.status(400).send({
                 success: false,
                 message: "No has completado todos los campos"
@@ -36,14 +36,14 @@ CategoriasRouter.post("/categorias", auth, authAdmin, async (req, res) => {
         }
 
 
-        if (nameC.length < 3) {
+        if (name.length < 3) {
             return res.status(400).send({
                 success: false,
                 message: "El nombre es demasiado corto"
             })
         }
 
-        if (nameC.length > 15) {
+        if (name.length > 15) {
             return res.status(400).send({
                 success: false,
                 message: "El nombre es demasiado largo"
@@ -51,7 +51,7 @@ CategoriasRouter.post("/categorias", auth, authAdmin, async (req, res) => {
         }
 
         let myCategoria = new Categorias({
-            nameC,
+            name,
             description
         })
 
@@ -73,74 +73,13 @@ CategoriasRouter.post("/categorias", auth, authAdmin, async (req, res) => {
 })
 
 
-//Permiso para crear una categoría para el vendedor
-CategoriasRouter.post("/categorias", async (req, res) => {
-    const {
-        nameC,
-        description
-    } = req.body
-    try {
 
-        // Compruebo si hay alguna categoría con el mismo nombre
-        let categoriaFind = await Categorias.findOne({
-            nameC
-        })
-        if (categoriaFind) {
-            return res.status(400).send({
-                success: false,
-                message: "Esta categoría ya se encuentra en uso"
-            })
-        }
-
-        if (!nameC || !description) {
-            return res.status(400).send({
-                success: false,
-                message: "No has completado todos los campos"
-            })
-        }
-
-
-        if (nameC.length < 3) {
-            return res.status(400).send({
-                success: false,
-                message: "El nombre es demasiado corto"
-            })
-        }
-
-        if (nameC.length > 15) {
-            return res.status(400).send({
-                success: false,
-                message: "El nombre es demasiado largo"
-            })
-        }
-
-        let myCategoria = new Categorias({
-            nameC,
-            description
-        })
-
-        await myCategoria.save()
-
-        return res.status(200).send({
-            success: true,
-            message: "Categoría creada correctamente",
-            myCategoria
-
-        })
-
-    } catch (error) {
-        return res.status(500).send({
-            success: false,
-            message: error.message
-        })
-    }
-})
 
 //GET
 // Buscar todas las categorías y los devuelve en un array 
 CategoriasRouter.get("/categorias", async (req, res) => {
     try {
-        let categorias = await Categorias.find({}).select("nameC description image price category size stock color")
+        let categorias = await Categorias.find({}).select("name description image price category size stock color")
         if (!categorias) {
             return res.status(400).send({
                 success: false,

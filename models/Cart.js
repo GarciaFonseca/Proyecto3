@@ -1,4 +1,4 @@
-const mongoose = required("mongoose"); 
+const mongoose = require("mongoose"); 
 
 const cartSchema = new mongoose.Schema({
   items: [
@@ -14,6 +14,9 @@ const cartSchema = new mongoose.Schema({
       },
       price: {
         type:Number,
+      },
+      name:{
+        type: String
       }
     },
   ],
